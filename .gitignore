@@ -35,3 +35,10 @@ Thumbs.db
 .vscode/
 *.swp
 *~
+
+# === Static – biblioteki zewnętrzne, NIE wersjonujemy ===
+static/admin/
+static/leaflet/
+static/leafletpm/
+static/rest_framework/
+static/polydecor

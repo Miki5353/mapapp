@@ -1,0 +1,16 @@
+# --- core ---
+Django==5.2
+asgiref==3.8.1
+sqlparse==0.5.3
+
+# --- REST API ---
+djangorestframework==3.16.0
+drf-nested-routers==0.94.1
+drf-spectacular
+drf-spectacular-sidecar
+
+# --- GIS / mapy ---
+django-leaflet==0.31.0
+
+# --- multimedia ---
+Pillow==11.2.1
