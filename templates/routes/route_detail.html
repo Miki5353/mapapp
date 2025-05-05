@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block content %}
+<div id="map" style="height:70vh;"></div>
+
+<div id="sidebar">
+    <h3>Punkty (<span id="pt-count">{{ route.points.count }}</span>)</h3>
+    <ul id="pt-list">
+        {% for p in route.points.all %}
+            <li data-id="{{ p.id }}">({{ p.x }},{{ p.y }})</li>
+        {% endfor %}
+    </ul>
+
+    <form id="add-form">
+        <input type="number" name="x" placeholder="X" required>
+        <input type="number" name="y" placeholder="Y" required>
+        <button>Dodaj</button>
+    </form>
+</div>
+
+{{ points|json_script:"pts-json" }}  {# generuje <script id="pts-json" …>#}
+
+<script>
+    window.CSRF_TOKEN = "{{ csrf_token }}";
+    window.EditorConfig = {
+        routeId: {{ route.id }},
+        imgUrl:  "{{ route.background.image.url }}",
+        imgW:    {{ route.background.image.width }},
+        imgH:    {{ route.background.image.height }},
+        points:  JSON.parse(document.getElementById('pts-json').textContent)
+    };
+</script>
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script src="{% static 'js/editor.js' %}" defer></script>
+{% endblock %}

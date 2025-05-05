@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Logowanie – Edytor tras{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title">Wejdź do Portalu</h1>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        <div class="field">
+            <label for="{{ form.username.id_for_label }}">Nazwa użytkownika</label>
+            {{ form.username }}
+        </div>
+        <div class="field">
+            <label for="{{ form.password.id_for_label }}">Hasło</label>
+            {{ form.password }}
+        </div>
+        <button class="btn" type="submit">Zaloguj</button>
+    </form>
+    <p>Nie masz konta? <a href="{% url 'register' %}">Zarejestruj się</a></p>
+</div>
+{% endblock %}

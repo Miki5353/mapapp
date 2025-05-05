@@ -1,0 +1,8 @@
+#map{
+    height:70vh;          /* lub 500px – ważne, by nie 0 */
+    width:100%;
+    border:1px solid #aaa;
+}
+
+.leaflet-interactive { pointer-events:stroke; }
+.arrow-end { color:#ffffff; font-size:12px; transform:translate(-50%,-50%); }

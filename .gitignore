@@ -1,0 +1,37 @@
+# === Python / Django ===
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+db.sqlite3
+venv/
+ENV/
+.Python
+# Pliki środowiskowe
+.env
+*.env
+*.venv
+1
+# === Node / Tailwind ===
+node_modules/
+.parcel-cache/
+dist/
+
+# === Static & media ===
+staticfiles/
+media/
+
+# === Testy / coverage ===
+htmlcov/
+*.cover
+coverage/
+
+# === System / IDE ===
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~

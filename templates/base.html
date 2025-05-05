@@ -1,0 +1,52 @@
+{% load leaflet_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Edytor tras{% endblock %}</title>
+    {% leaflet_css %}
+    {% leaflet_js %}
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <script src="{% static 'leafletpm/leaflet.pm.min.js' %}" defer></script>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="navbar">
+        <div class="container flex" style="justify-content:space-between; align-items:center; padding:0.75rem 0;">
+            <a href="{% url 'route_list' %}"><strong>Lista Tras</strong></a>
+
+            {% if user.is_authenticated %}
+                <div class="flex" style="align-items:center; gap:1rem;">
+                    <span>{{ user.username }}</span>
+                    <form action="{% url 'logout' %}" method="post">{% csrf_token %}
+                        <button>Wyloguj</button>
+                    </form>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}">Zaloguj</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- FLASH -->
+    <div class="container mt-4">
+        {% for message in messages %}
+            <div style="background:#e6ffed; border:1px solid #a7f3d0; padding:.5rem 1rem; border-radius:4px; margin-bottom:.5rem;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- MAIN -->
+    <main class="container mt-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="text-center">
+        Lab Django
+    </footer>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
