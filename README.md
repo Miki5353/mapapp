@@ -1,6 +1,6 @@
-# MyDjangoProject
+# MapApp
 
-> Kompletny projekt **Django 5 + Tailwind CSS**. Repozytorium zawiera wyłącznie kod źródłowy – wszystkie zależności są pobierane z `requirements.txt` i `package.json`, a pliki generowane (np. `staticfiles/`, `node_modules/`) zostały wyłączone w `.gitignore`. Dzięki temu projekt można odtworzyć w kilku prostych krokach.
+> Kompletny projekt realizujący 3 zadanie z aplikacji WWW korzystając z **Django**.
 
 ---
 
@@ -12,12 +12,13 @@
 4. [Uruchamianie aplikacji](#uruchamianie-aplikacji)
 5. [Testy](#testy)
 6. [Budowanie zasobów statycznych](#budowanie-zasobów-statycznych)
+7. [Korzystanie z aplikacji](#korzystanie-zaplikacji-uiapi)
 
 ---
 
 ## Wymagania
 
-| Narzędzie         | Wersja mínima       |
+| Narzędzie         | Wersja              |
 | ----------------- | ------------------- |
 | Python            | **3.11** lub nowszy |
 | Node.js           | **20** lub nowszy   |
@@ -48,19 +49,13 @@ npm install
 
 ## Konfiguracja środowiska
 
-1. **Skopiuj domyślny plik konfiguracyjny** i uzupełnij go:
 
-   ```bash
-   cp .env.example .env
-   ```
-2. **Kluczowe zmienne** do ustawienia:
-
-   | Zmienna                   | Opis                                                                                                                                          |
-   | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-   | `SECRET_KEY`              | Wygenerowany klucz Django (użyj `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`) |
-   | `DEBUG`                   | `1` (dev) lub `0` (prod)                                                                                                                      |
-   | `ALLOWED_HOSTS`           | Lista hostów/domen oddzielona przecinkami                                                                                                     |
-   | `DATABASE_URL`            | URL zgodny z `dj-database-url` (np. `postgres://user:pass@localhost:5432/mydb`)                                                               |
+| Zmienna                   | Opis                                                                                                                                          |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SECRET_KEY`              | Wygenerowany klucz Django (użyj `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`) |
+| `DEBUG`                   | `1` (dev) lub `0` (prod)                                                                                                                      |
+| `ALLOWED_HOSTS`           | Lista hostów/domen oddzielona przecinkami                                                                                                     |
+| `DATABASE_URL`            | URL zgodny z `dj-database-url` (np. `postgres://user:pass@localhost:5432/mydb`)                                                               |
 
 ```bash
 # wygeneruj nowy klucz (jeżeli nie istnieje, to django wygeneruje automatycznie)
@@ -118,5 +113,55 @@ npm run build
 # Kopiowanie do STATIC_ROOT
 python manage.py collectstatic
 ```
+---
+
+## Korzystanie z aplikacji (UI + API)
+
+### 1. Mapa (interfejs graficzny)
+
+| Operacja                    | Jak to zrobić?                                   |
+|-----------------------------|--------------------------------------------------|
+| **Dodaj punkt**             | kliknij dowolne miejsce na mapie → pojawi się nowy marker |
+| **Przesuń punkt**           | złap marker i przeciągnij go (drag & drop)       |
+| **Usuń punkt**              | kliknij istniejący marker → ikonka 🗑 / „Delete” |
+
+Zmiany zapisują się automatycznie poprzez wywołania REST‑API w tle – nie musisz odświeżać strony.
 
 ---
+
+### 2. REST‑API
+
+| End‑point                | Metoda | Opis                                                |
+|--------------------------|--------|-----------------------------------------------------|
+| `/api/routes/`           | GET    | lista tras                                          |
+| `/api/routes/`           | POST   | utwórz nową trasę (`name`, `background`)            |
+| `/api/routes/<id>/`      | GET    | szczegóły wybranej trasy                            |
+| `/api/routes/<id>/`      | PUT    | aktualizacja całej trasy                            |
+| `/api/routes/<id>/`      | PATCH  | aktualizacja części trasy                           |
+| `/api/routes/<id>/`      | DELETE | usunięcie trasy                                     |
+
+| End‑point                           | Metoda  | Opis                                    |
+|-------------------------------------|---------|-----------------------------------------|
+| `/api/routes/<route_pk>/points/`    | GET     | lista punktów dla danej trasy           |
+| `/api/routes/<route_pk>/points/`    | POST    | dodaj punkt do trasy                    |
+| `/api/routes/<route_pk>/points/<id>`| GET     | szczegóły konkretnego punktu            |
+| `/api/routes/<route_pk>/points/<id>`| PATCH   | przesuń punkt                           |
+| `/api/routes/<route_pk>/points/<id>`| DELETE  | usuń punkt                              |
+
+> **Autoryzacja:** nagłówek `Authorization: Token <TWÓJ_TOKEN>`
+> (patrz poniżej, jak wygenerować token).
+
+---
+
+### 3. Dokumentacja interaktywna
+
+*Swagger UI* dostępny jest pod adresem: **`/api/docs`**
+Po prawej stronie wprowadź token (pole „Authorize”), aby wywoływać end‑pointy bezpośrednio z przeglądarki.
+
+---
+
+### 4. Jak nadać token API użytkownikowi
+
+```bash
+python manage.py drf_create_token <nazwa_użytkownika>
+```
