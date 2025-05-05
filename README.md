@@ -123,7 +123,7 @@ python manage.py collectstatic
 |-----------------------------|--------------------------------------------------|
 | **Dodaj punkt**             | kliknij dowolne miejsce na mapie → pojawi się nowy marker |
 | **Przesuń punkt**           | złap marker i przeciągnij go (drag & drop)       |
-| **Usuń punkt**              | kliknij istniejący marker → ikonka 🗑 / „Delete” |
+| **Usuń punkt**              | kliknij istniejący marker → potwierdź w oknie dialogowym |
 
 Zmiany zapisują się automatycznie poprzez wywołania REST‑API w tle – nie musisz odświeżać strony.
 
