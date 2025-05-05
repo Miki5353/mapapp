@@ -31,8 +31,8 @@
 
 ```bash
 # 1. Sklonuj repozytorium
-git clone https://github.com/TwojeKonto/my-django-project.git
-cd my-django-project
+git clone https://github.com/miki5353/mapapp.git
+cd mapapp
 
 # 2. Utwórz i aktywuj virtualenv
 python3 -m venv venv
@@ -129,7 +129,13 @@ Zmiany zapisują się automatycznie poprzez wywołania REST‑API w tle – nie
 
 ---
 
-### 2. REST‑API
+### 2. Admin
+
+Menu admina jest dostępne pod `/admin/` po zalogowaniu na konto administratora. Można tam zarządzać użytkownikami oraz dodawać obrazy tła (zalecam dodać jakiś obraz tła by móc przetestować aplikację).
+
+---
+
+### 3. REST‑API
 
 | End‑point                | Metoda | Opis                                                |
 |--------------------------|--------|-----------------------------------------------------|
@@ -153,14 +159,14 @@ Zmiany zapisują się automatycznie poprzez wywołania REST‑API w tle – nie
 
 ---
 
-### 3. Dokumentacja interaktywna
+### 4. Interaktywna dokumentacja
 
 *Swagger UI* dostępny jest pod adresem: **`/api/docs`**
 Po prawej stronie wprowadź token (pole „Authorize”), aby wywoływać end‑pointy bezpośrednio z przeglądarki.
 
 ---
 
-### 4. Jak nadać token API użytkownikowi
+### 5. Jak nadać token API użytkownikowi
 
 ```bash
 python manage.py drf_create_token <nazwa_użytkownika>
