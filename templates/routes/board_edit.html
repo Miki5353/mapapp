@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edycja – {{ board.title|default:"Nowa plansza" }}{% endblock %}
+
+{% block extrahead %}
+  <!-- edytor + wspólne moduły -->
+  <script type="module" src="{% static 'js/board-editor.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<!-- ★★★ Kontener flex wyrasta na pełną wysokość ekranu ★★★ -->
+<div class="flex flex-col min-h-[calc(90vh-4rem)]">  {# 4 rem = przybliżona wysokość topbara #}
+
+  <!-- 👉 górny pasek z formularzem -->
+  <form method="post"
+        class="bg-[#68A691] p-4 flex flex-wrap gap-4 items-end">
+    {% csrf_token %}
+    <div>
+      <label class="block text-sm mb-1">Nazwa</label>
+      <input type="text" name="title"
+             value="{{ board.title|default:'' }}"
+             class="bg-[#DADFF7] border border-gray-700 rounded px-2 py-1 w-52" />
+    </div>
+
+    <div>
+      <label class="block text-sm mb-1">Wiersze</label>
+      <input type="number" min="2" max="20" name="rows"
+             value="{{ board.rows|default:5 }}"
+             class="bg-[#DADFF7]  border border-gray-700 rounded px-2 py-1 w-24" />
+    </div>
+
+    <div>
+      <label class="block text-sm mb-1">Kolumny</label>
+      <input type="number" min="2" max="20" name="cols"
+             value="{{ board.cols|default:5 }}"
+             class="bg-[#DADFF7]  border border-gray-700 rounded px-2 py-1 w-24" />
+    </div>
+
+    <button id="saveGrid"
+            type="button"
+            class="ml-auto bg-[#8D6A9F] hover:bg-[#9C528B]
+                    transition-transform duration-200 hover:scale-110
+                    px-8 py-2 rounded text-sm font-semibold">
+      💾 Zapisz
+    </button>
+  </form>
+
+  <!-- 👉 główny obszar z siatką i paletą -->
+  <div class="flex-1 flex overflow-hidden">          {# flex-1 ➔ wypełnia całą pozostałą wysokość #}
+
+    <!-- lewa kolumna – lista par -->
+    <aside class="w-60 border-r border-gray-800 overflow-y-auto p-4">
+      <h2 class="text-sm font-semibold mb-2">Pary kropek</h2>
+      <ul id="pairList" class="space-y-1 text-sm"></ul>
+    </aside>
+
+    <!-- środkowy kontener siatki – rośnie razem z wysokością -->
+    <div class="flex-1 flex items-center justify-center overflow-hidden">
+      <div id="gridWrapper" class="w-full max-w-[90vmin] max-h-[80vh]
+        aspect-square p-4">
+        <div id="gridContainer"
+             data-board-id="{{ board.id|default:'' }}"
+             class="h-full w-full"></div>
+      </div>
+    </div>
+
+    <!-- prawa kolumna – paleta kolorów -->
+    <aside class="w-48 border-l border-gray-800 p-4">
+      <h2 class="text-sm font-semibold mb-2">Paleta</h2>
+      <div id="colorPalette" class="grid grid-cols-4 gap-2 mb-3">
+      </div>
+
+      <label class="block text-xs mb-1">Własny kolor</label>
+      <input id="colorPicker" type="color"
+             class="w-12 h-8 p-0 border-0 bg-transparent"
+             value="#68A691"/>
+    </aside>
+
+  </div>
+    <!-- ■ toast sukcesu -->
+  <div id="saveSuccessToast"
+       class="fixed bottom-6 right-6 px-4 py-2 bg-emerald-600 text-white
+              text-sm rounded shadow-lg opacity-0 transition-opacity
+              duration-500 pointer-events-none z-50">
+    ✅ Zapisano pomyślnie!
+  </div>
+</div>
+{% endblock %}

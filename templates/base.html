@@ -1,21 +1,20 @@
-{% load leaflet_tags %}
+{% load tailwind_tags %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Edytor tras{% endblock %}</title>
-    {% leaflet_css %}
-    {% leaflet_js %}
-    <link href="{% static 'css/output.css' %}" rel="stylesheet">
-    <script src="{% static 'leafletpm/leaflet.pm.min.js' %}" defer></script>
+    {% tailwind_css%}
+    {% block extrahead %}{% endblock %}
 </head>
 <body>
 
     <!-- NAV -->
     <nav class="navbar">
-        <div class="container flex" style="justify-content:space-between; align-items:center; padding:0.75rem 0;">
-            <a href="{% url 'route_list' %}"><strong>Lista Tras</strong></a>
+        <div class="container mx-auto flex justify-between items-center px-8 py-3">
+            <a href="{% url 'board_list_all' %}"><strong>Lista Plansz</strong></a>
+            <a href="{% url 'board_list_mine' %}"><strong>Moje plansze</strong></a>
 
             {% if user.is_authenticated %}
                 <div class="flex" style="align-items:center; gap:1rem;">
@@ -40,7 +39,7 @@
     </div>
 
     <!-- MAIN -->
-    <main class="container mt-4">
+    <main class="w-full mt-4 bg-[#DADFF7]">
         {% block content %}{% endblock %}
     </main>
 

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Podgląd – {{ board.title }}{% endblock %}
+
+{% block extrahead %}
+  <script type="module" src="{% static 'js/board-view.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="flex flex-col items-center flex-1 overflow-hidden">
+    <h1 class="text-xl font-semibold mb-4">{{ board.title }}</h1>
+    <div id="gridContainer"
+        class="flex items-center justify-center
+                w-full max-w-[80vmin] max-h-[80vh] aspect-square overflow-hidden"
+        data-board-id="{{ board.id }}">
+</div>
+{% endblock %}

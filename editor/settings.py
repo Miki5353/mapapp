@@ -54,13 +54,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # third‑party
     "leaflet",
+    "tailwind",
+    "theme",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
     "drf_spectacular_sidecar",
+    'widget_tweaks',
     # local
     "routes",
 ]
+
+TAILWIND_APP_NAME = "theme"
 
 # --- Middleware ----------------------------------------------------------
 MIDDLEWARE = [
@@ -154,5 +159,5 @@ REST_FRAMEWORK = {
 
 # --- Auth redirects ------------------------------------------------------
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "route_list"
+LOGIN_REDIRECT_URL = "board_list_mine"
 LOGOUT_REDIRECT_URL = "login"

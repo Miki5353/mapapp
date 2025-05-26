@@ -1,0 +1,776 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/boards/:
+    get:
+      operationId: boards_list
+      tags:
+      - boards
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameBoard'
+          description: ''
+    post:
+      operationId: boards_create
+      tags:
+      - boards
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameBoard'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GameBoard'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GameBoard'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameBoard'
+          description: ''
+  /api/boards/{id}/:
+    get:
+      operationId: boards_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - boards
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameBoard'
+          description: ''
+    put:
+      operationId: boards_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - boards
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameBoard'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GameBoard'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GameBoard'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameBoard'
+          description: ''
+    patch:
+      operationId: boards_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - boards
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGameBoard'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGameBoard'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGameBoard'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameBoard'
+          description: ''
+    delete:
+      operationId: boards_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - boards
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/routes/:
+    get:
+      operationId: routes_list
+      description: API dla tras – tylko trasy właściciela.
+      tags:
+      - routes
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+          description: ''
+    post:
+      operationId: routes_create
+      description: API dla tras – tylko trasy właściciela.
+      tags:
+      - routes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Route'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Route'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+          description: ''
+  /api/routes/{id}/:
+    get:
+      operationId: routes_retrieve
+      description: API dla tras – tylko trasy właściciela.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - routes
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+          description: ''
+    put:
+      operationId: routes_update
+      description: API dla tras – tylko trasy właściciela.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - routes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Route'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Route'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+          description: ''
+    patch:
+      operationId: routes_partial_update
+      description: API dla tras – tylko trasy właściciela.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - routes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRoute'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRoute'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRoute'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+          description: ''
+    delete:
+      operationId: routes_destroy
+      description: API dla tras – tylko trasy właściciela.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - routes
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/routes/{route_pk}/points/:
+    get:
+      operationId: routes_points_list
+      description: API dla punktów danej trasy – tylko punkty tras właściciela.
+      parameters:
+      - in: path
+        name: route_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - routes
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoutePoint'
+          description: ''
+    post:
+      operationId: routes_points_create
+      description: API dla punktów danej trasy – tylko punkty tras właściciela.
+      parameters:
+      - in: path
+        name: route_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - routes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoutePoint'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RoutePoint'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RoutePoint'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutePoint'
+          description: ''
+  /api/routes/{route_pk}/points/{id}/:
+    get:
+      operationId: routes_points_retrieve
+      description: API dla punktów danej trasy – tylko punkty tras właściciela.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: route_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - routes
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutePoint'
+          description: ''
+    patch:
+      operationId: routes_points_partial_update
+      description: API dla punktów danej trasy – tylko punkty tras właściciela.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: route_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - routes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRoutePoint'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRoutePoint'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRoutePoint'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutePoint'
+          description: ''
+    delete:
+      operationId: routes_points_destroy
+      description: API dla punktów danej trasy – tylko punkty tras właściciela.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: route_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - routes
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/token/:
+    post:
+      operationId: token_create
+      tags:
+      - token
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    GameBoard:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: Nazwa planszy
+          maxLength: 50
+        rows:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Wiersze
+        cols:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Kolumny
+        dots:
+          title: Kropki
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - id
+      - modified
+      - title
+    PatchedGameBoard:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: Nazwa planszy
+          maxLength: 50
+        rows:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Wiersze
+        cols:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Kolumny
+        dots:
+          title: Kropki
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedRoute:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 20
+        background:
+          type: integer
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedRoutePoint:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        x:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        y:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        order:
+          type: integer
+          readOnly: true
+    Route:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 20
+        background:
+          type: integer
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - background
+      - created
+      - id
+      - name
+    RoutePoint:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        x:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        y:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        order:
+          type: integer
+          readOnly: true
+      required:
+      - id
+      - order
+      - x
+      - y
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

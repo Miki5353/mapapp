@@ -2,5 +2,27 @@
   "dependencies": {
     "@tailwindcss/cli": "^4.1.4",
     "tailwindcss": "^4.1.4"
-  }
+  },
+  "name": "lab10",
+  "version": "1.0.0",
+  "description": "> Kompletny projekt realizujący 3 zadanie z aplikacji WWW korzystając z **Django**.",
+  "main": "index.js",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miki5353/mapapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/miki5353/mapapp/issues"
+  },
+  "homepage": "https://github.com/miki5353/mapapp#readme"
 }

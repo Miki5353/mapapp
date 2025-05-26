@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Lista plansz{% endblock %}
+
+{# ————— dodatkowe skrypty i style ————— #}
+{% block extrahead %}
+  <script type="module" src="{% static 'js/board-list.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-6">
+
+  <h1 class="text-2xl font-semibold mb-6">Lista plansz</h1>
+
+  <div class="flex items-center justify-between mb-6">
+  {% if request.user.is_authenticated %}
+    <a href="{% url 'board_new' %}"
+       class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700
+              rounded px-4 py-2 text-sm shadow">
+       ➕ <span>Nowa plansza</span>
+    </a>
+  {% else %}
+    <span class="inline-flex items-center gap-1 bg-emerald-600 opacity-40
+                 rounded px-4 py-2 text-sm cursor-not-allowed"
+          aria-disabled="true">
+      ➕ <span>Nowa plansza</span>
+    </span>
+  {% endif %}
+</div>
+
+  {#  desktop: tabela  #}
+  <div class="hidden md:block">
+    <table class="min-w-full border border-gray-700 rounded-lg overflow-hidden">
+      <thead class="bg-gray-800 text-gray-300 text-sm">
+        <tr>
+          <th class="px-4 py-2 text-left">Nazwa</th>
+          <th class="px-4 py-2 text-left">Autor</th>
+          <th class="px-4 py-2 w-52 text-right">Akcje</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-700">
+        {% for b in boards %}
+          <tr class="hover:bg-gray-800 js-row" data-id="{{ b.id }}">
+            <td class="px-4 py-2">{{ b.title }}</td>
+            <td class="px-4 py-2">{{ b.owner.username }}</td>
+            <td class="px-4 py-2">
+              <div class="flex gap-2 justify-end">
+                <a href="{% url 'board_view' b.pk %}"
+                   class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 rounded text-xs">Zobacz</a>
+                {# ------- Trasa / Nowa trasa ------- #}
+                {% if request.user.is_authenticated %}
+                  {% if b.route_for_user %}
+                    <a href="{% url 'route_edit' b.pk %}"
+                      class="w-28 text-center px-5 py-1 bg-yellow-500 hover:bg-yellow-600 rounded text-xs whitespace-nowrap">Trasa</a>
+                  {% else %}
+                    <a href="{% url 'route_new' b.pk %}"
+                      class="w-28 text-center px-5 py-1 bg-yellow-500 hover:bg-yellow-600 rounded text-xs whitespace-nowrap">Nowa trasa</a>
+                  {% endif %}
+                {% else %}
+                  <span class="px-5 py-1 bg-yellow-500 opacity-40 rounded text-xs cursor-not-allowed whitespace-nowrap"
+                        aria-disabled="true">Nowa trasa</span>
+                {% endif %}
+                {# ------- Edytuj ------- #}
+                {% if b.owner_id == user.id %}
+                  <a href="{% url 'board_edit' b.pk %}"
+                     class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 rounded text-xs">Edytuj</a>
+                {% else %}
+                  <span class="px-3 py-1 bg-emerald-600 opacity-40 rounded text-xs cursor-not-allowed"
+                        aria-disabled="true">Edytuj</span>
+                {% endif %}
+
+                {# ------- Usuń ------- #}
+                <button class="js-del px-3 py-1 rounded text-xs
+                               {% if b.owner_id == user.id %}
+                                  bg-red-600 hover:bg-red-700
+                               {% else %}
+                                  bg-red-600 opacity-40 cursor-not-allowed
+                               {% endif %}"
+                        {% if b.owner_id != user.id %}disabled aria-disabled="true"{% endif %}>
+                  Usuń
+                </button>
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="3" class="text-center py-4 text-gray-400">– brak plansz –</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {#  mobile: kafelki  #}
+  <div class="grid grid-cols-1 gap-4 md:hidden">
+    {% for b in boards %}
+      <div class="border border-gray-700 rounded-lg p-3 js-card" data-id="{{ b.id }}">
+        <div class="flex justify-between items-center mb-2">
+          <span class="font-medium">{{ b.title }}</span>
+          <span class="text-xs text-gray-400">@{{ b.owner.username }}</span>
+        </div>
+
+        <div class="flex gap-2">
+          <a href="{% url 'board_view' b.pk %}"
+             class="flex-1 text-center text-xs py-1 rounded bg-indigo-600 hover:bg-indigo-700">Zobacz</a>
+          {% if request.user.is_authenticated %}
+            {% if b.route_for_user %}
+              <a href="{% url 'route_edit' b.route_for_user.id %}"
+                class="text-center text-xs py-1 px-5 rounded bg-yellow-500 hover:bg-yellow-600 whitespace-nowrap">Trasa</a>
+            {% else %}
+              <a href="{% url 'route_new' b.pk %}"
+                class="text-center text-xs py-1 px-5 rounded bg-yellow-500 hover:bg-yellow-600 whitespace-nowrap">Nowa trasa</a>
+            {% endif %}
+          {% else %}
+            <span class="text-center text-xs py-1 px-5 rounded bg-yellow-500 opacity-40 cursor-not-allowed whitespace-nowrap"
+                  aria-disabled="true">Nowa trasa</span>
+          {% endif %}
+          {% if b.owner_id == user.id %}
+            <a href="{% url 'board_edit' b.pk %}"
+               class="flex-1 text-center text-xs py-1 rounded bg-emerald-600 hover:bg-emerald-700">Edytuj</a>
+            <button class="js-del flex-1 text-xs py-1 rounded bg-red-600 hover:bg-red-700">Usuń</button>
+          {% else %}
+            <span class="flex-1 text-center text-xs py-1 rounded bg-emerald-600 opacity-40 cursor-not-allowed">Edytuj</span>
+            <button class="js-del flex-1 text-xs py-1 rounded bg-red-600 opacity-40 cursor-not-allowed"
+                    disabled aria-disabled="true">Usuń</button>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center text-gray-400">– brak plansz –</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

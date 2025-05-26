@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Trasa – {{ route.name|default:"Nowa trasa" }}{% endblock %}
+
+{% block extrahead %}
+  <!-- moduły współdzielone przez edytory -->
+  <script type="module" src="{% static 'js/route-editor.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="flex flex-col min-h-[calc(90vh-4rem)]">
+  <!-- ◼ górny pasek formularza --------------------------------------- -->
+  <form method="post" class="bg-[#68A691] p-4 flex flex-wrap gap-4 items-end">
+    {% csrf_token %}
+    <input type="hidden" name="board_id" value="{{ board.id }}">
+    <div>
+      <label class="block text-sm mb-1">Nazwa trasy</label>
+      <input type="text" name="name" value="{{ route.name|default:'' }}"
+             class="bg-[#DADFF7] border border-gray-700 rounded px-2 py-1 w-52" />
+    </div>
+    <button id="saveRoute" type="button"
+        class="ml-auto bg-[#8D6A9F] hover:bg-[#9C528B]
+               transition-transform duration-200 hover:scale-110
+               px-8 py-2 rounded text-sm font-semibold
+               disabled:bg-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-300 disabled:hover:scale-100"
+        >
+      💾 Zapisz trasę
+    </button>
+  </form>
+
+  <!-- ◼ główny obszar: siatka + lista punktów ------------------------ -->
+  <div class="flex-1 flex overflow-hidden">
+    <!-- siatka -->
+    <div class="flex-1 flex items-center justify-center overflow-hidden">
+      <div id="gridWrapper"
+           class="w-full max-w-[90vmin] max-h-[80vh] aspect-square p-4">
+        <div id="gridContainer"
+             data-board-id="{{ board.id }}"
+             data-route-id="{{ route.id|default:'' }}"
+             class="h-full w-full"></div>
+      </div>
+    </div>
+
+    <!-- lista punktów trasy -->
+    <aside class="w-60 border-l border-gray-800 overflow-y-auto p-4">
+      <h2 class="text-sm font-semibold mb-2">Punkty trasy</h2>
+      <ol id="pointList" class="space-y-1 text-sm list-decimal list-inside"></ol>
+
+      <button id="clearLast"
+              class="mt-4 bg-red-500 hover:bg-red-400 px-4 py-1
+                     rounded text-xs text-white w-full">
+        Usuń ostatni punkt
+      </button>
+      <button id="clearAll"
+              class="mt-2 bg-red-700 hover:bg-red-600 px-4 py-1
+                     rounded text-xs text-white w-full">
+        Wyczyść wszystko
+      </button>
+    </aside>
+  </div>
+
+  <!-- ◼ toast “zapisano” -->
+  <div id="saveSuccessToast"
+       class="fixed bottom-6 right-6 px-4 py-2 bg-emerald-600 text-white
+              text-sm rounded shadow-lg opacity-0 transition-opacity
+              duration-500 pointer-events-none z-50">
+    ✅ Zapisano trasę!
+  </div>
+</div>
+{% endblock %}

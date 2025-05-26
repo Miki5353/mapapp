@@ -9,7 +9,7 @@ from rest_framework.test import APIClient, APITestCase
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 
-from .models import BackgroundImage, Route, RoutePoint  # adjust import path
+from .models import BackgroundImage, Route, RoutePoint, GameBoard  # adjust import path
 
 User = get_user_model()
 
@@ -251,3 +251,59 @@ class RoutePointAPITests(AuthenticatedAPIMixin, APITestCase):
         )
         res = self.api_client.get(f"/api/routes/{foreign_route.id}/points/")
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+class BoardAccessTests(APITestCase):
+    def setUp(self):
+        self.alice = User.objects.create_user("alice","a@x.com","pwd")
+        self.bob   = User.objects.create_user("bob","b@x.com","pwd")
+        self.board = GameBoard.objects.create(owner=self.alice, title="A", rows=4, cols=4)
+
+    def test_owner_can_patch(self):
+        self.client.force_authenticate(self.alice)
+        r = self.client.patch(f"/api/boards/{self.board.pk}/", {"rows":8}, format="json")
+        self.assertEqual(r.status_code, 200)
+
+    def test_other_user_cannot_patch(self):
+        self.client.force_authenticate(self.bob)
+        r = self.client.patch(f"/api/boards/{self.board.pk}/", {"rows":8}, format="json")
+        self.assertEqual(r.status_code, 403)
+
+    def test_public_view_is_open(self):
+        r = self.client.get(f"/api/public-boards/{self.board.pk}/")
+        self.assertEqual(r.status_code, 200)
+
+class BoardValidationTests(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user("alice", password="pwd")
+        self.token = Token.objects.create(user=self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token.key}")
+
+    def post_board(self, dots):
+        payload = {"title":"bad","rows":4,"cols":4,"dots":dots}
+        return self.client.post("/api/boards/", payload, format="json")
+
+    def test_three_dots_same_colour(self):
+        resp = self.post_board([
+            {"row":0,"col":0,"color":"#ff0000"},
+            {"row":0,"col":1,"color":"#ff0000"},
+            {"row":1,"col":0,"color":"#ff0000"},
+        ])
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("dokładnie 2 razy", resp.data["non_field_errors"][0])
+
+    def test_two_dots_same_cell(self):
+        resp = self.post_board([
+            {"row":0,"col":0,"color":"#ff0000"},
+            {"row":0,"col":0,"color":"#00ff00"},
+        ])
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("Podwójna kropka", resp.data["non_field_errors"][0])
+
+    def test_single_dot_unpaired(self):
+        resp = self.post_board([
+            {"row":0,"col":0,"color":"#ff0000"},
+            {"row":1,"col":1,"color":"#00ff00"},
+            {"row":2,"col":2,"color":"#00ff00"},
+        ])
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("dokładnie 2 razy", resp.data["non_field_errors"][0])

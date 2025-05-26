@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extrahead %}
+  <script type="module" src="{% static 'js/board-editor.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center flex-1 overflow-hidden">
+
+  <!-- ■ górny pasek meta-danych  -->
+  <form id="board-meta" class="flex gap-6 flex-wrap items-end p-4">
+      {% csrf_token %}
+      <label class="block">
+          <span class="text-sm">Wiersze</span>
+          <input id="rowsInput" type="number" name="rows" min="2" max="30"
+                 value="{{ form.initial.rows|default:5 }}"
+                 class="border border-gray-700 rounded px-2 py-1 w-24">
+      </label>
+
+      <label class="block">
+          <span class="text-sm">Kolumny</span>
+          <input id="colsInput" type="number" name="cols" min="2" max="30"
+                 value="{{ form.initial.cols|default:5 }}"
+                 class="border border-gray-700 rounded px-2 py-1 w-24">
+      </label>
+
+      <label class="block">
+          <span class="text-sm">Nazwa</span>
+          <input type="text" name="title"
+                 value="{{ form.initial.title|default_if_none:'' }}"
+                 class="border border-gray-700 rounded px-2 py-1 w-40">
+      </label>
+  </form>
+
+  <!-- ■ główna sekcja: siatka + paleta  -->
+  <div class="flex flex-1 overflow-hidden">
+
+      <!-- ◄◄ wrapper siatki  (środek)  -->
+      <div id="gridWrapper"
+           class="flex flex-1 justify-center items-start overflow-auto p-4">
+        <div id="gridContainer"
+             data-board-id="{{ board.id|default:'' }}"></div>
+      </div>
+
+      <!-- ►► panel z paletą -->
+      <aside class="w-52 shrink-0 border-l border-gray-800 p-4 overflow-y-auto">
+          <h2 class="text-lg font-semibold mb-3">Kolory</h2>
+
+          {# –––  paleta guzików  ––– #}
+          <div id="colorPalette" class="grid grid-cols-5 gap-2 mb-4">
+              {# Używamy |safe, bo {{ c }} jest np. "#ef4444" – nie niesie HTML #}
+              {% for c in palette %}
+                <button type="button"
+                        data-color="{{ c }}"
+                        class="w-7 h-7 rounded border-2 border-gray-700
+                               hover:scale-105 transition-transform"
+                        style="background:{{ c|safe }}"></button>
+              {% endfor %}
+          </div>
+
+          <label class="block text-sm mb-2">własny kolor:</label>
+          <input id="colorPicker" type="color"
+                 class="w-full h-10 p-0 rounded-lg border-0 bg-transparent
+                        shadow-none outline-none focus:ring-0"
+                 value="#68A691">
+      </aside>
+  </div>
+
+  <!-- ■ przycisk zapisu  -->
+  <div class="p-4 flex justify-center">
+      <button id="saveGrid"
+              class="bg-[#8D6A9F] hover:bg-[#9C528B]
+                     transition-transform duration-200 hover:scale-110
+                     px-8 py-2 rounded text-sm font-semibold">
+          💾 Zapisz
+      </button>
+  </div>
+
+  <!-- ■ toast sukcesu -->
+  <div id="saveSuccessToast"
+       class="fixed bottom-6 right-6 px-4 py-2 bg-emerald-600 text-white
+              text-sm rounded shadow-lg opacity-0 transition-opacity
+              duration-500 pointer-events-none z-50">
+    ✅ Zapisano pomyślnie!
+  </div>
+</div>
+{% endblock %}
