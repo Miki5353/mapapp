@@ -1,3 +1,5 @@
+# editor/settings.py
+
 """
 Django settings for editor project.
 
@@ -66,6 +68,7 @@ INSTALLED_APPS = [
 ]
 
 TAILWIND_APP_NAME = "theme"
+
 
 # --- Middleware ----------------------------------------------------------
 MIDDLEWARE = [

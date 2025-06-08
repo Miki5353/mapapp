@@ -1,3 +1,4 @@
+#editor/urls.pl
 """
 URL configuration for editor project.
 

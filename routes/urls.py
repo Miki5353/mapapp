@@ -1,6 +1,7 @@
-# urls.py
+# routes/urls.py
 from django.urls import path
 from . import views
+from .sse import event_stream
 from django.views.generic import RedirectView
 
 urlpatterns = [
@@ -23,4 +24,6 @@ urlpatterns = [
 
     path("boards/<int:pk>/route", views.route_edit, name="route_edit"),
     path("boards/<int:pk>/new", views.route_edit, name="route_new"),
+
+    path("sse/notifications/", event_stream, name="sse_notifications"),
 ]
